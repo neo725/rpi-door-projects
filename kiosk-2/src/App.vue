@@ -1,8 +1,47 @@
 <template>
-  <div id="app">
+  <v-app>
+    <!-- <div class="fullscreen"> -->
+    <v-container class="no-top-bottom" ref="MainScreen" v-show="!SleepMode">
+      <v-app-bar app color="primary" dark v-if="false">
+        <div class="d-flex align-center">
+          <v-img
+            alt="Vuetify Logo"
+            class="shrink mr-2"
+            contain
+            src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+            transition="scale-transition"
+            width="40"
+          />
+
+          <v-img
+            alt="Vuetify Name"
+            class="shrink mt-1 hidden-sm-and-down"
+            contain
+            min-width="100"
+            src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+            width="100"
+          />
+        </div>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+          href="https://github.com/vuetifyjs/vuetify/releases/latest"
+          target="_blank"
+          text
+        >
+          <span class="mr-2">Latest Release</span>
+          <v-icon>mdi-open-in-new</v-icon>
+        </v-btn>
+      </v-app-bar>
+      <v-main v-if="false">
+        <HelloWorld v-if="false" />
+      </v-main>
+      <Main />
+    </v-container>
     <Video ref="IdleScreen" v-on:hide="onVideoHide" v-show="SleepMode" />
-    <Main v-show="!SleepMode" />
-  </div>
+    <!-- </div> -->
+  </v-app>
 </template>
 
 <script>
@@ -10,6 +49,7 @@ import Video from "./components/Video";
 import Main from "./components/Main";
 
 import $ from "jquery";
+import screenfull from "screenfull";
 
 const sleepModeTimeout = 10; // wait for n seconds, if device idle, then into sleep mode
 
@@ -21,6 +61,7 @@ export default {
   data() {
     return {
       SleepMode: false,
+      // fullscreen: false,
     };
   },
   mounted() {
@@ -28,12 +69,26 @@ export default {
 
     setTimeout(this.responsiveAppLayer, 500);
     setTimeout(this.prepareToWaitSleepMode, 1000);
+    setTimeout(this.goFullscreen, 1000);
   },
   components: {
     Video,
     Main,
   },
   methods: {
+    triggerFullscreen() {
+      //this.$refs["fullscreen"].click();
+      if (this.$refs.FullScreen && this.$refs.FullScreen.click) {
+        this.$refs.FullScreen.click();
+      }
+    },
+    goFullscreen() {
+      if (screenfull.isEnabled) {
+        console.log("App.vue go fullscreen mode.");
+
+        screenfull.request();
+      }
+    },
     responsiveAppLayer(nextTimeout = 500) {
       var documentHeight = $(document).height();
 
@@ -75,25 +130,3 @@ export default {
   },
 };
 </script>
-
-<style type="text/scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  font-size: 36px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  /* text-align: center;
-  color: #2c3e50;
-  margin-top: 60px; */
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.4),
-      rgba(255, 255, 255, 0.4)
-    ),
-    url("./assets/space-denis-degioanni-9wH624ALFQA-unsplash.jpg");
-  /* background-color: rgba(255, 255, 255, 0.5); */
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-size: cover;
-}
-</style>

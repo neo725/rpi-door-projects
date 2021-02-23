@@ -1,0 +1,22 @@
+.video {
+  width: 100% !important;
+  height: 100% !important;
+
+  .video-player {
+    padding: 0;
+    margin: 0;
+
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+.video-overlayer {
+  position: fixed;
+  z-index: 99999;
+  width: 100%;
+  height: 100%;
+  /* background-color: #ff0000; */
+  top: 0;
+  left: 0;
+  cursor: default;
+}
